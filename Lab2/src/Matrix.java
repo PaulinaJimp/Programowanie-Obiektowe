@@ -71,9 +71,17 @@ public class Matrix {
         buf.append("[");
         for(int i=0;i<rows;i++){
             buf.append("[");
-            //...
+            for (int j=0;j<cols;j++)
+            {
+                if(j==cols-1)
+                    buf.append(data[i*cols+j] + "]");
+                else
+                    buf.append(data[i*cols+j] + ", ");
+            }
+            if(i!=rows-1)
+                buf.append(", ");
         }
-        //...
+        buf.append("]");
         return buf.toString();
     }
     public static void main(String[] arg)
@@ -83,6 +91,7 @@ public class Matrix {
         a.print_matrix();
         double[][] t=a.asArray();
         System.out.print(a.get(2,1));
+        System.out.print("\n" + a.toString());
 
     }
 }
