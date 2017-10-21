@@ -66,7 +66,7 @@ public class Matrix {
         data = new double[rows*cols];
     }
 
-   /* public String toString(){
+    public String toString(){
         StringBuilder buf = new StringBuilder();
         buf.append("[");
         for(int i=0;i<rows;i++){
@@ -75,7 +75,7 @@ public class Matrix {
         }
         //...
         return buf.toString();
-    }*/
+    }
     public static void main(String[] arg)
     {
         double [][] tab= {{1,2}, {3,4,8}};
