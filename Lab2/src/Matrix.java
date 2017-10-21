@@ -194,6 +194,24 @@ public class Matrix {
         }
         return a;
     }
+
+    Matrix dot(Matrix m)
+    {
+        if(this.cols!=m.rows)
+            throw new RuntimeException(String.format("can't dot those matrixes"));
+        Matrix a= new Matrix(this.rows,m.cols);
+        for(int i=0;i<this.rows;i++)
+        {
+            for(int j=0;j<m.cols;j++)
+            {
+                for(int k=0;k<m.rows;k++)
+                {
+                    a.data[i*m.cols+j]+=this.data[i*this.cols+k]*m.data[k*m.cols+j];
+                }
+            }
+        }
+        return a;
+    }
     void reshape(int newRows,int newCols){
         if(rows*cols != newRows*newCols)
             throw new RuntimeException(String.format("%d x %d matrix can't be reshaped to %d x %d",rows,cols,newRows,newCols));
@@ -207,7 +225,7 @@ public class Matrix {
     {
         double [][] tab= {{1,2}, {3,4,8}, {3,7,9},{1}};
         Matrix a = new Matrix(tab);
-        a.print_matrix();
+        //a.print_matrix();
         /*double[][] t=a.asArray();
         //System.out.print(a.get(2,1));
         System.out.print( a.toString());
@@ -215,11 +233,14 @@ public class Matrix {
         System.out.print( "\n" + a.toString());
         a.print_matrix();
         System.out.print(a.shape()[0]);*/
-        double [][] tab1={{0,0,0}, {0,0,0}, {0,0,0},{1,1,1}};
+        double [][] tab1={{0,4}, {3,5}, {1,0}};
         Matrix m=new Matrix(tab1);
-        a.add(m);
-        System.out.print( "\n" + a.sub(m).toString());
-        a.sub(7);
-        //System.out.print( "\n" + a.sub(7).toString());
+       // a.add(m);
+        a.print_matrix();
+        m.print_matrix();
+        //System.out.print( "\n" + a.sub(m).toString());
+        //a.sub(7);
+        a.dot(m).print_matrix();
+
     }
 }
