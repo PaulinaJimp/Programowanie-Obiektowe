@@ -117,7 +117,6 @@ public class Matrix {
             for (int j=0;j<this.cols;j++)
                 a.data[i * this.cols + j] = this.data[i * this.cols + j] - m.data[i * this.cols + j];
         }
-        a.print_matrix();
         return a;
     }
 
@@ -147,7 +146,6 @@ public class Matrix {
                     throw new RuntimeException(String.format("do not div by 0!!!"));
                 a.data[i * this.cols + j] = this.data[i * this.cols + j] / m.data[i * this.cols + j];
             }
-
         }
         return a;
     }
