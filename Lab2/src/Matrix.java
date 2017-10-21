@@ -31,8 +31,7 @@ public class Matrix {
         double [][]tab=new double[this.rows][this.cols];
         for(int i=0;i<this.rows;i++)
         {
-            for(int j=0;j<this.cols;j++)
-                tab[i][j]=this.data[i*this.cols+j];
+            System.arraycopy(this.data, i * this.cols, tab[i], 0, this.cols);
         }
         return tab;
     }
@@ -48,12 +47,12 @@ public class Matrix {
 
     void print_matrix()
     {
+        System.out.print("\n");
         for(int i=0;i<this.rows;i++)
         {
             for(int j=0;j<this.cols;j++)
             {
-                System.out.print(this.data[i*this.cols+j]);
-                System.out.print("  ");
+                System.out.print(this.data[i*this.cols+j]+"  ");
             }
             System.out.print("\n");
         }
@@ -74,9 +73,9 @@ public class Matrix {
             for (int j=0;j<cols;j++)
             {
                 if(j==cols-1)
-                    buf.append(data[i*cols+j] + "]");
+                    buf.append(data[i * cols + j]).append("]");
                 else
-                    buf.append(data[i*cols+j] + ", ");
+                    buf.append(data[i * cols + j]).append(", ");
             }
             if(i!=rows-1)
                 buf.append(", ");
@@ -84,14 +83,136 @@ public class Matrix {
         buf.append("]");
         return buf.toString();
     }
+
+    int[] shape()
+    {
+        return new int[]{rows,cols};
+    }
+
+    Matrix add(Matrix m)
+    {
+        /*this works for reshaped matrixes
+        if(this.rows*this.cols != m.rows*m.cols)
+            throw new RuntimeException(String.format("those matrix can't be added"));
+        for(int i=0;i<this.rows*this.cols;i++)
+            this.data[i] = this.data[i] + m.data[i];*/
+        if(this.rows!=m.rows ||this.cols != m.cols)
+            throw new RuntimeException(String.format("those matrix can't be added"));
+        for(int i=0;i<this.rows;i++)
+        {
+            for (int j=0;j<this.cols;j++)
+                this.data[i * this.cols + j] = this.data[i * this.cols + j] + m.data[i * this.cols + j];
+        }
+        return this;
+    }
+
+    Matrix sub(Matrix m)
+    {
+        if(this.rows!=m.rows ||this.cols != m.cols)
+            throw new RuntimeException(String.format("those matrix can't be added"));
+        for(int i=0;i<this.rows;i++)
+        {
+            for (int j=0;j<this.cols;j++)
+                this.data[i * this.cols + j] = this.data[i * this.cols + j] - m.data[i * this.cols + j];
+        }
+        return this;
+    }
+
+    Matrix mul(Matrix m)
+    {
+        if(this.rows!=m.rows ||this.cols != m.cols)
+            throw new RuntimeException(String.format("those matrix can't be added"));
+        for(int i=0;i<this.rows;i++)
+        {
+            for (int j=0;j<this.cols;j++)
+                this.data[i * this.cols + j] = this.data[i * this.cols + j] * m.data[i * this.cols + j];
+        }
+        return this;
+    }
+
+    Matrix div(Matrix m)
+    {
+        if(this.rows!=m.rows ||this.cols != m.cols)
+            throw new RuntimeException(String.format("those matrix can't be added"));
+        for(int i=0;i<this.rows;i++)
+        {
+            for (int j=0;j<this.cols;j++)
+            {
+                if(m.data[i * this.cols + j]==0)
+                    throw new RuntimeException(String.format("do not div by 0!!!"));
+                this.data[i * this.cols + j] = this.data[i * this.cols + j] / m.data[i * this.cols + j];
+            }
+
+        }
+        return this;
+    }
+
+    Matrix add(double w)
+    {
+        for(int i=0;i<this.rows;i++)
+        {
+            for (int j=0;j<this.cols;j++)
+                this.data[i * this.cols + j] +=w;
+        }
+        return this;
+    }
+    Matrix sub(double w)
+    {
+        for(int i=0;i<this.rows;i++)
+        {
+            for (int j=0;j<this.cols;j++)
+                this.data[i * this.cols + j] -=w;
+        }
+        return this;
+    }
+
+    Matrix mul(double w)
+    {
+        for(int i=0;i<this.rows;i++)
+        {
+            for (int j=0;j<this.cols;j++)
+                this.data[i * this.cols + j] *=w;
+        }
+        return this;
+    }
+
+    Matrix div(double w)
+    {
+        if(w==0)
+            throw new RuntimeException(String.format("do not div by 0!!!"));
+        for(int i=0;i<this.rows;i++)
+        {
+            for (int j=0;j<this.cols;j++)
+                this.data[i * this.cols + j] /=w;
+        }
+        return this;
+    }
+    void reshape(int newRows,int newCols){
+        if(rows*cols != newRows*newCols)
+            throw new RuntimeException(String.format("%d x %d matrix can't be reshaped to %d x %d",rows,cols,newRows,newCols));
+        else
+        {
+            rows=newRows;
+            cols=newCols;
+        }
+    }
     public static void main(String[] arg)
     {
-        double [][] tab= {{1,2}, {3,4,8}};
+        double [][] tab= {{1,2}, {3,4,8}, {3,7,9},{1}};
         Matrix a = new Matrix(tab);
         a.print_matrix();
         double[][] t=a.asArray();
-        System.out.print(a.get(2,1));
-        System.out.print("\n" + a.toString());
-
+        //System.out.print(a.get(2,1));
+        System.out.print( a.toString());
+        //a.reshape(3,4);
+        System.out.print( "\n" + a.toString());
+        a.print_matrix();
+        System.out.print(a.shape()[0]);
+        double [][] tab1={{0,0,0}, {0,0,0}, {0,0,0},{1,1,1}};
+        Matrix m=new Matrix(tab1);
+        a.add(m);
+        System.out.print( "\n" + a.toString());
+        a.sub(7);
+        System.out.print( "\n" + a.toString());
     }
 }
