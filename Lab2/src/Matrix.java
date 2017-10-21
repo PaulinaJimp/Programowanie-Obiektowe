@@ -1,3 +1,6 @@
+import static java.lang.Math.pow;
+import static java.lang.StrictMath.sqrt;
+
 public class Matrix {
 
     double[]data;
@@ -212,6 +215,14 @@ public class Matrix {
         }
         return a;
     }
+
+    double frobenius()
+    {
+        double a=0;
+        for(int i=0;i<this.cols*this.rows;i++)
+            a+=pow(this.data[i],2);
+        return sqrt(a);
+    }
     void reshape(int newRows,int newCols){
         if(rows*cols != newRows*newCols)
             throw new RuntimeException(String.format("%d x %d matrix can't be reshaped to %d x %d",rows,cols,newRows,newCols));
@@ -241,6 +252,7 @@ public class Matrix {
         //System.out.print( "\n" + a.sub(m).toString());
         //a.sub(7);
         a.dot(m).print_matrix();
+        System.out.print(m.frobenius());
 
     }
 }
