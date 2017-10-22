@@ -1,5 +1,7 @@
 import static java.lang.Math.pow;
 import static java.lang.StrictMath.sqrt;
+import java.util.Random;
+
 
 public class Matrix {
 
@@ -232,6 +234,29 @@ public class Matrix {
             cols=newCols;
         }
     }
+
+    public static Matrix random(int rows, int cols){
+        Matrix m = new Matrix(rows,cols);
+        Random r = new Random();
+        for(int i=1;i<=m.rows;i++)
+        {
+            for(int j=1;j<=m.cols;j++)
+            {
+                m.set(i,j,r.nextDouble()*100);
+            }
+        }
+        return m;
+    }
+
+    public static Matrix eye(int n){
+        Matrix m = new Matrix(n,n);
+        for(int i=1;i<=m.rows;i++)
+        {
+                m.set(i,i,1);
+        }
+        return m;
+    }
+
     public static void main(String[] arg)
     {
         double [][] tab= {{1,2}, {3,4,8}, {3,7,9},{1}};
@@ -253,6 +278,9 @@ public class Matrix {
         //a.sub(7);
         a.dot(m).print_matrix();
         System.out.print(m.frobenius());
+        eye(5).print_matrix();
+        Matrix r = Matrix.random(2,3);
+        r.print_matrix();
 
     }
 }
