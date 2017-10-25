@@ -235,6 +235,12 @@ public class Matrix {
         }
     }
 
+    Matrix inv(Matrix a)
+    {
+        if(a.rows!=a.cols )
+            throw new RuntimeException(String.format("can't do inv"));
+        return a;
+    }
     public static Matrix random(int rows, int cols){
         Matrix m = new Matrix(rows,cols);
         Random r = new Random();
